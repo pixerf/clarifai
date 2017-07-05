@@ -1,5 +1,9 @@
 # Clarifai
 
+[![Hex.pm](https://img.shields.io/hexpm/v/clarifai.svg)](https://hex.pm/packages/clarifai/0.1.1)
+[![Travis](https://img.shields.io/travis/ChanChar/clarifai.svg)](https://travis-ci.org/ChanChar/clarifai)
+[![license](https://img.shields.io/github/license/chanchar/clarifai.svg)](https://github.com/ChanChar/clarifai/blob/master/LICENSE)
+
 Elixir API for Clarifai.
 
 To use Clarifai's API, you need to sign up and request an API key.
