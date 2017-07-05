@@ -19,43 +19,43 @@ end
 ```elixir
 Clarifai.models
 
-{
-  :ok,
-  [
-    %Clarifai.Structs.Model{
-      app_id: "main",
-      created_at: "2017-03-06T22:57:00.707216Z",
-      id: "c443119bf2ed4da98487520d01a0b1e3",
-      name: "logo",
-      output_info: %{
-        "message" => "Show output_info with: GET /models/{model_id}/output_info",
-        "type" => "concept",
-        "type_ext" => "detection"
-      },
-      version: %{
-        "active_concept_count" => 561,
-        "created_at" => "2017-03-06T22:57:05.625525Z",
-        "id" => "ef1b7237d28b415f910ca343a9145e99",
-        "status" => %{
-          "code" => 21100, "description" => "Model trained successfully"
+=> {
+    :ok,
+    [
+      %Clarifai.Structs.Model{
+        app_id: "main",
+        created_at: "2017-03-06T22:57:00.707216Z",
+        id: "c443119bf2ed4da98487520d01a0b1e3",
+        name: "logo",
+        output_info: %{
+          "message" => "Show output_info with: GET /models/{model_id}/output_info",
+          "type" => "concept",
+          "type_ext" => "detection"
+        },
+        version: %{
+          "active_concept_count" => 561,
+          "created_at" => "2017-03-06T22:57:05.625525Z",
+          "id" => "ef1b7237d28b415f910ca343a9145e99",
+          "status" => %{
+            "code" => 21100, "description" => "Model trained successfully"
+          }
         }
-      }
-    },
-    ...
-  ]
+      },
+      ...
+    ]
 ```
 
 ### Available Model Names
 
 ```elixir
 Clarifai.model_names
-{
-  :ok,
-  [
-    "logo", "focus", "apparel", "celeb-v1.3", "weddings-v1.0",
-    "food-items-v1.0", "nsfw-v1.0", "travel-v1.0", "color", "general-v1.3"
-  ]
-}
+=> {
+    :ok,
+    [
+      "logo", "focus", "apparel", "celeb-v1.3", "weddings-v1.0",
+      "food-items-v1.0", "nsfw-v1.0", "travel-v1.0", "color", "general-v1.3"
+    ]
+  }
 ```
 
 ### Tagging images with the given models
