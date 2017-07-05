@@ -1,6 +1,6 @@
 # Clarifai
 
-**TODO: Add description**
+Elixir API for Clarifai.
 
 ## Installation
 

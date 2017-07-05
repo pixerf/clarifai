@@ -7,6 +7,8 @@ defmodule Clarifai.Mixfile do
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     description: description(),
+     package: package(),
      deps: deps()]
   end
 
@@ -21,6 +23,21 @@ defmodule Clarifai.Mixfile do
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
       {:httpoison, "~> 0.11.1"},
       {:poison, "~> 3.0"}
+    ]
+  end
+
+  defp description do
+    "Elixir API client for Clarifai."
+  end
+
+  defp package do
+    # These are the default files included in the package
+    [
+      name: :postgrex,
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      maintainers: ["Charles C. Lee"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/ChanChar/clarifai"}
     ]
   end
 end
