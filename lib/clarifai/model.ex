@@ -33,13 +33,12 @@ defmodule Clarifai.Model do
   def find_by(attribute_type, attribute) do
     {:ok, models} = index()
 
-    model = Enum.find(
+    Enum.find(
       models, fn(model) -> attribute == Map.get(model, attribute_type) && model.output_info["type"] != "embed" end
     )
   end
 
   def build_models(models_json) do
-    status = models_json[:status]
     models = for model_attr <- models_json[:models], do: build_model(model_attr)
 
     Client.update(:models, models)
