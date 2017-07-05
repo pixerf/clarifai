@@ -1,20 +1,41 @@
 defmodule Clarifai.Model do
+  @moduledoc """
+  Handles fetching and formatting Clarifai models.
+  """
+
   @model_path "models"
+  @unsupported_types ["facedetect", "embed"]
+
+  require IEx
 
   alias Clarifai.Client, as: Client
 
-  def available_models do
+  def index do
     case Client.fetch(:models) do
-      nil -> fetch_models()
-      models -> models
+      [] -> get_index()
+      models -> {:ok, models}
     end
   end
 
-  def fetch_models do
+  def index_names do
+    {:ok, models} = index()
+
+    {:ok, Enum.filter_map(models, fn(model) -> !Enum.member?(@unsupported_types, model.output_info["type_ext"]) end, &(Map.get(&1, :name)))}
+  end
+
+  def get_index do
     case Clarifai.Client.get(path: @model_path, version: :v2, headers: nil) do
       {:ok, parsed_json} -> {:ok, build_models(parsed_json)}
       {:error, error} -> {:error, error}
     end
+  end
+
+  def find_by(attribute_type, attribute) do
+    {:ok, models} = index()
+
+    model = Enum.find(
+      models, fn(model) -> attribute == Map.get(model, attribute_type) && model.output_info["type"] != "embed" end
+    )
   end
 
   def build_models(models_json) do

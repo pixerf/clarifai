@@ -1,31 +1,35 @@
 defmodule Clarifai.Client do
+  @moduledoc """
+  Clarifai elixir API client.
+  """
+  require Logger
+
+  @base_url "https://api.clarifai.com"
+
   defmodule MissingConfig do
     defexception message: "Missing config value"
   end
-
-  require Logger
-  require IEx
-
-  @base_url "https://api.clarifai.com"
 
   def start_link(_opts) do
     Agent.start_link(fn -> %{token: %Clarifai.Structs.AccessToken{}, models: []} end, name: __MODULE__)
   end
 
-  def post(path: path, body: body, version: version, headers: headers) do
-    Logger.info "Posting to #{api_endpoint(path, version)}"
+  def post(path: path, body: body, version: version, headers: headers, options: options) do
+    post_url = api_endpoint(path, version)
+    encoded_body = Poison.encode!(body)
+    headers = headers || json_headers_with_authorization()
+    options = options || []
 
-    case HTTPoison.post(api_endpoint(path, version), {:form, Map.to_list(body)}, headers || json_headers_with_authorization()) do
+    case HTTPoison.post(post_url, encoded_body, headers, options) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, parse_response(body)}
       {:error, error} -> {:error, error}
     end
   end
 
   def get(path: path, version: version, headers: headers) do
-    Logger.info "Requesting from #{api_endpoint(path, version)}"
-
     case HTTPoison.get(api_endpoint(path, version), headers || json_headers_with_authorization()) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, parse_response(body)}
+      {:error, error} -> {:error, error}
     end
   end
 
@@ -37,7 +41,7 @@ defmodule Clarifai.Client do
     |> Enum.map(fn({k, v}) -> {String.to_atom(k), v} end)
   end
 
-  def get_clarifai_config(type) when type in [:access_token, :client_id, :client_secret, :version] do
+  def get_config(type) when type in [:access_token, :client_id, :client_secret, :version] do
     System.get_env("CLARIFAI_#{Atom.to_string(type)}") ||
       Application.get_env(:clarifai, type) ||
         raise MissingConfig, message: "Missing value for `#{type}`, please define one as an environment variable or within the clarifai configs."
@@ -46,7 +50,7 @@ defmodule Clarifai.Client do
   def authorization_headers(access_token), do: %{"Authorization": "Bearer #{access_token.value}"}
 
   def json_headers_with_authorization do
-    authorization_headers(access_token()) |> Map.put_new("Content-Type", "application/json")
+    access_token() |> authorization_headers |> Map.put_new("Content-Type", "application/json")
   end
 
   def access_token do

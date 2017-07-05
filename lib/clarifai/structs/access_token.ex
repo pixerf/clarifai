@@ -1,4 +1,9 @@
 defmodule Clarifai.Structs.AccessToken do
+  @moduledoc """
+  Structure for an access token
+  """
+
+  @type t :: %Clarifai.Structs.AccessToken{value: binary, last_refreshed: integer, expires_in: integer, scope: list(), type: any}
   defstruct [:value, :last_refreshed, :expires_in, :scope, :type]
 
   def valid?(nil), do: false
