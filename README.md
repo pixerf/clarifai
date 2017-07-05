@@ -4,7 +4,8 @@ Elixir API for Clarifai.
 
 To use Clarifai's API, you need to sign up and request an API key.
 Oauth2 is being deprecated but is still supported by this package. You can still use a client ID and secret.
-Go to https://developer.clarifai.com/ for more information.
+
+Visit [Clarifai](https://developer.clarifai.com/) for more information.
 
 After obtaining either an API key or a client ID/secret, update your `config.exs` with the neccesary values.
 
