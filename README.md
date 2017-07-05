@@ -2,6 +2,9 @@
 
 Elixir API for Clarifai.
 
+To use Clarifai's API, you need to sign up and request a client ID and secret.
+Go to https://developer.clarifai.com/ for more information.
+
 ## Installation
 
 The package can be installed by adding `clarifai` to your list of dependencies in `mix.exs` and running `mix deps.get`:
