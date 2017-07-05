@@ -2,8 +2,19 @@
 
 Elixir API for Clarifai.
 
-To use Clarifai's API, you need to sign up and request a client ID and secret.
+To use Clarifai's API, you need to sign up and request an API key.
+Oauth2 is being deprecated but is still supported by this package. You can still use a client ID and secret.
 Go to https://developer.clarifai.com/ for more information.
+
+After obtaining either an API key or a client ID/secret, update your `config.exs` with the neccesary values.
+
+```elixir
+config :clarifai,
+  client_id: "your_client_id",
+  client_secret: "your_client_secret",
+  api_key: "your_api_key",
+  version: "v2"
+```
 
 ## Installation
 
@@ -64,7 +75,7 @@ Clarifai.model_names
 ### Tagging images with the given models
 
 ```elixir
-Clarifai.predict(["https://unsplash.it/5092/3395?image=1062"], ["colors", "general-v1.3"])
+Clarifai.predict(["https://unsplash.it/5092/3395?image=1062"], ["color", "general-v1.3"])
 
 => %Clarifai.Structs.Response{
       predictions: [

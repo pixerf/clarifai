@@ -31,7 +31,6 @@ defmodule Clarifai.Mixfile do
   end
 
   defp package do
-    # These are the default files included in the package
     [
       name: :clarifai,
       files: ["lib", "mix.exs", "README*", "LICENSE*"],

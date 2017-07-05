@@ -47,10 +47,14 @@ defmodule Clarifai.Client do
         raise MissingConfig, message: "Missing value for `#{type}`, please define one as an environment variable or within the clarifai configs."
   end
 
-  def authorization_headers(access_token), do: %{"Authorization": "Bearer #{access_token.value}"}
+  def authorization_headers(access_token, :access_token), do: %{"Authorization": "Bearer #{access_token.value}"}
+  def authorization_headers(api_key, :api_key), do: %{"Authorization": "Key #{api_key}"}
 
   def json_headers_with_authorization do
-    access_token() |> authorization_headers |> Map.put_new("Content-Type", "application/json")
+    case Application.get_env(:clarifai, :api_key) do
+      nil -> access_token() |> authorization_headers(:access_token) |> Map.put_new("Content-Type", "application/json")
+      api_key -> api_key |> authorization_headers(:api_key) |> Map.put_new("Content-Type", "application/json")
+    end
   end
 
   def access_token do
