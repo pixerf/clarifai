@@ -33,7 +33,7 @@ defmodule Clarifai.Mixfile do
   defp package do
     # These are the default files included in the package
     [
-      name: :postgrex,
+      name: :clarifai,
       files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Charles C. Lee"],
       licenses: ["MIT"],
