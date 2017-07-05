@@ -22,7 +22,7 @@ The package can be installed by adding `clarifai` to your list of dependencies i
 
 ```elixir
 def deps do
-  [{:clarifai, "~> 0.1.0"}]
+  [{:clarifai, "~> 0.1.1"}]
 end
 ```
 
