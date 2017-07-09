@@ -9,7 +9,13 @@ defmodule Clarifai.Mixfile do
      start_permanent: Mix.env == :prod,
      description: description(),
      package: package(),
-     deps: deps()]
+     deps: deps(),
+
+        # Docs
+     name: "Clarifai",
+     source_url: "https://github.com/ChanChar/clarifai",
+     docs: [main: "Clarifai",
+            extras: ["README.md"]]]
   end
 
   def application do
