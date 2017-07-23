@@ -13,7 +13,7 @@ defmodule Clarifai do
   Returns a `Clarifai.Structs.Response` containing the predictions.
   Each image has one prediction and each prediction can have many tags grouped by model.
   """
-  @spec predict(nonempty_list(binary), list(binary)) :: %Clarifai.Structs.Response{}
+  @spec predict(nonempty_list(binary), list(binary)) :: {:ok, %Clarifai.Structs.Response{}}
   def predict(urls, models \\ ["general-v1.3"]) do
     {:ok, Clarifai.Structs.Response.build(for model <- models, url <- urls, do: Clarifai.Tag.fetch_tags(model, url))}
   end

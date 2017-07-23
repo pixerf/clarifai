@@ -11,7 +11,7 @@ defmodule Clarifai.Structs.Prediction do
   Prediction data for a single image. A prediction may have many tags grouped by model.
   """
 
-  defstruct [:status, :image_url, :errors, tags_by_model: [%Clarifai.Structs.TagsByModel{}], ]
+  defstruct [:status, :image_url, :errors, tags_by_model: [%Clarifai.Structs.TagsByModel{}]]
 end
 
 defmodule Clarifai.Structs.Response do
