@@ -1,6 +1,6 @@
 # Clarifai
 
-[![Hex.pm](https://img.shields.io/hexpm/v/clarifai.svg)](https://hex.pm/packages/clarifai/0.1.1)
+[![Hex.pm](https://img.shields.io/hexpm/v/clarifai.svg)](https://hex.pm/packages/clarifai)
 [![Travis](https://img.shields.io/travis/ChanChar/clarifai.svg)](https://travis-ci.org/ChanChar/clarifai)
 [![license](https://img.shields.io/github/license/chanchar/clarifai.svg)](https://github.com/ChanChar/clarifai/blob/master/LICENSE)
 
