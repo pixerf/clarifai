@@ -10,7 +10,8 @@ defmodule Clarifai.Structs.Prediction do
   @moduledoc """
   Prediction data for a single image. A prediction may have many tags grouped by model.
   """
-  defstruct [:status, :image_url, tags_by_model: [%Clarifai.Structs.TagsByModel{}]]
+
+  defstruct [:status, :image_url, :errors, tags_by_model: [%Clarifai.Structs.TagsByModel{}], ]
 end
 
 defmodule Clarifai.Structs.Response do
@@ -20,25 +21,29 @@ defmodule Clarifai.Structs.Response do
 
   defstruct [predictions: [%Clarifai.Structs.Prediction{}]]
 
-  def build(predictions, response \\ %{})
+  def build(predictions, response \\ %{}, errors \\ [])
 
-  def build([], response) do
-    predictions = for {image_url, tags_by_model} <- response, do: %Clarifai.Structs.Prediction{status: :ok, image_url: image_url, tags_by_model: tags_by_model}
+  def build([], response, errors) do
+    predictions = for {image_url, tags_by_model} <- response, do: %Clarifai.Structs.Prediction{status: :ok, image_url: image_url, tags_by_model: tags_by_model, errors: errors}
 
     %Clarifai.Structs.Response{predictions: predictions}
   end
 
-  def build([first_prediction | remaining_predictions], response) do
-    {_status, [h | _t]} = first_prediction
+  def build([{:ok, outputs} | remaining_predictions], response, errors) do
+    output = List.first(outputs)
 
     {_status, updated_response} = Map.get_and_update(
       response,
-      h.data.url,
+      output.data.url,
       fn current_value ->
-        {current_value, (current_value || []) ++ [%Clarifai.Structs.TagsByModel{model: h.data.model_name, tags: h.tags}]}
+        {current_value, (current_value || []) ++ [%Clarifai.Structs.TagsByModel{model: output.data.model_name, tags: output.tags}]}
       end
     )
 
-    build(remaining_predictions, updated_response)
+    build(remaining_predictions, updated_response, errors)
+  end
+
+  def build([{:error, outputs} | remaining_predictions], response, errors) do
+    build(remaining_predictions, response, errors ++ [outputs])
   end
 end

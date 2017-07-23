@@ -5,6 +5,7 @@ defmodule Clarifai.Mixfile do
     [app: :clarifai,
      version: "0.1.1",
      elixir: "~> 1.4",
+     preferred_cli_env: [espec: :test],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
@@ -26,6 +27,7 @@ defmodule Clarifai.Mixfile do
   defp deps do
     [
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
+      {:espec, "~> 1.4.1", only: :test},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
       {:httpoison, "~> 0.11.1"},
       {:poison, "~> 3.0"}

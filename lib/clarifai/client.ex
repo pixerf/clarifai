@@ -22,6 +22,7 @@ defmodule Clarifai.Client do
 
     case HTTPoison.post(post_url, encoded_body, headers, options) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, parse_response(body)}
+      {:ok, %HTTPoison.Response{status_code: status_code, body: body}} -> {:error, format_error(status_code, body)}
       {:error, error} -> {:error, error}
     end
   end
@@ -39,6 +40,19 @@ defmodule Clarifai.Client do
     json_data
     |> Poison.decode!
     |> Enum.map(fn({k, v}) -> {String.to_atom(k), v} end)
+  end
+
+  def format_error(status_code, json_data) do
+    ouput_response = parse_response(json_data)[:outputs] |> List.first
+
+    %{
+      http_status_code: status_code,
+      status: %{
+        code: ouput_response["status"]["code"],
+        code_description: ouput_response["status"]["description"],
+        details: ouput_response["status"]["details"],
+      }
+    }
   end
 
   def get_config(type) when type in [:access_token, :client_id, :client_secret, :version] do

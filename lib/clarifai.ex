@@ -1,6 +1,6 @@
 defmodule Clarifai do
   @moduledoc """
-  Access point for all the methods that the user _should_ need.
+  Access point for all the public methods.
   """
 
   @doc """
@@ -15,7 +15,7 @@ defmodule Clarifai do
   """
   @spec predict(nonempty_list(binary), list(binary)) :: %Clarifai.Structs.Response{}
   def predict(urls, models \\ ["general-v1.3"]) do
-    Clarifai.Structs.Response.build(for model <- models, url <- urls, do: Clarifai.Tag.fetch_tags(model, url))
+    {:ok, Clarifai.Structs.Response.build(for model <- models, url <- urls, do: Clarifai.Tag.fetch_tags(model, url))}
   end
 
   defdelegate models, to: Clarifai.Model, as: :index
