@@ -55,17 +55,19 @@ defmodule Clarifai.Client do
     }
   end
 
-  def get_config(type) when type in [:access_token, :client_id, :client_secret, :version] do
-    System.get_env("CLARIFAI_#{Atom.to_string(type)}") ||
+  def get_config(type) when type in [:api_key, :access_token, :client_id, :client_secret, :version] do
+    get_system_config(type) ||
       Application.get_env(:clarifai, type) ||
         raise MissingConfig, message: "Missing value for `#{type}`, please define one as an environment variable or within the clarifai configs."
   end
+
+  def get_system_config(type), do: System.get_env("CLARIFAI_#{String.upcase(Atom.to_string(type))}")
 
   def authorization_headers(access_token, :access_token), do: %{"Authorization": "Bearer #{access_token.value}"}
   def authorization_headers(api_key, :api_key), do: %{"Authorization": "Key #{api_key}"}
 
   def json_headers_with_authorization do
-    case Application.get_env(:clarifai, :api_key) do
+    case get_config(:api_key) do
       nil -> access_token() |> authorization_headers(:access_token) |> Map.put_new("Content-Type", "application/json")
       api_key -> api_key |> authorization_headers(:api_key) |> Map.put_new("Content-Type", "application/json")
     end
