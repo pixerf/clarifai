@@ -14,6 +14,8 @@ defmodule Clarifai.Client do
     Agent.start_link(fn -> %{token: %Clarifai.Structs.AccessToken{}, models: []} end, name: __MODULE__)
   end
 
+  def base_url, do: @base_url
+
   def post(path: path, body: body, version: version, headers: headers, options: options) do
     post_url = api_endpoint(path, version)
     encoded_body = Poison.encode!(body)
