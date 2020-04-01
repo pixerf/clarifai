@@ -7,8 +7,8 @@ defmodule Clarifai.Tag do
 
   @tag_path "models"
 
-  def fetch_tags(model_name, image_url) do
-    model = Clarifai.Model.find_by(:name, model_name)
+  def fetch_tags(model_id, image_url) do
+    model = Clarifai.Model.find_by(:id, model_id)
 
     case Clarifai.Client.post(path: "#{@tag_path}/#{model.id}/outputs", body: build_body([image_url]), version: :v2, headers: nil, options: nil) do
       {:ok, parsed_json} -> {:ok, build_tags(model, parsed_json)}
